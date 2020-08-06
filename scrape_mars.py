@@ -17,7 +17,8 @@ def scrape_all():
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
         "hemispheres": hemispheres(browser),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "mars_weather_tweet": mars_weather_tweet(browser)
     }
     # Stop webdriver and return data
     browser.quit()
@@ -67,6 +68,17 @@ def featured_image(browser):
     # Use the base url to create an absolute url
     img_url = f'https://www.jpl.nasa.gov{img_url_rel}'
     return img_url
+
+def mars_weather_tweet(browser):
+    mars_weather = soup.find('div', attrs={"class": "tweet", "data-name": "Mars Weather"})
+    try:
+        mars_weather_tweet = mars_weather.find("p", "tweet-text").get_text()
+        mars_weather_tweet
+    except AttributeError:
+        pattern = re.compile(r'sol')
+        mars_weather_tweet = soup.find('span', text=pattern).text
+        mars_weather_tweet
+
 
 def mars_facts():
     # Add try/except for error handling
