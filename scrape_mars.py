@@ -5,6 +5,7 @@ import pandas as pd
 import datetime as dt
 import requests
 import time
+import re
 
 def scrape_all():
     # Initiate headless driver for deployment
